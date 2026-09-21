@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default function HeroSection() {
+export default function HeroSection({ onOpenRegistrationModal }) {
   return (
     <section className="relative bg-light-sports text-slate-900 pt-10 pb-16 lg:pt-14 lg:pb-24 overflow-hidden border-b border-slate-200 shadow-sm" data-purpose="hero-banner" id="competitions">
       {/* Watermark official emblem in background */}
@@ -38,15 +39,16 @@ export default function HeroSection() {
                 </svg>
                 Explore Tournaments &amp; Results
               </a>
-              <a
+              <button
+                onClick={onOpenRegistrationModal}
                 className="px-6 py-3.5 bg-esac-saffron hover:bg-esac-saffron-dark text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition transform hover:-translate-y-0.5 flex items-center gap-2"
-                href="#athlete-registration"
+                type="button"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 Register for ESAC-ID (Athlete Card)
-              </a>
+              </button>
             </div>
 
             {/* Feature Assurance Badges */}
@@ -111,9 +113,9 @@ export default function HeroSection() {
                     <div className="text-[11px] text-slate-600">Current Leader: <span className="text-orange-600 font-semibold">D. Netam (Kanker) 298/300</span></div>
                   </div>
                 </div>
-                <a className="px-2.5 py-1 text-[11px] font-bold bg-esac-blue hover:bg-esac-blue-dark text-white rounded transition shadow-sm" href="#live-dashboard">
+                <Link className="px-2.5 py-1 text-[11px] font-bold bg-esac-blue hover:bg-esac-blue-dark text-white rounded transition shadow-sm" to="/live-scores">
                   View Board
-                </a>
+                </Link>
               </div>
             </div>
           </div>

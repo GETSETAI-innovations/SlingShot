@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function TopUtilityBar() {
-  const [lang, setLang] = useState('EN');
+  const { language, setLanguage } = useLanguage();
 
   return (
     <aside className="bg-slate-900 text-slate-200 text-xs border-b border-slate-700/60 sticky top-0 z-50" data-purpose="utility-bar">
@@ -34,18 +35,24 @@ export default function TopUtilityBar() {
           </div>
 
           {/* Language Switcher */}
-          <div className="flex items-center border border-slate-700 rounded overflow-hidden">
+          <div className="flex items-center border border-slate-700 rounded overflow-hidden shadow-xs">
             <button
-              onClick={() => setLang('EN')}
-              className={`px-2 py-0.5 font-bold text-[10px] transition ${lang === 'EN' ? 'bg-esac-blue text-white' : 'hover:bg-slate-800 text-slate-400 font-medium'}`}
+              onClick={() => setLanguage('EN')}
+              className={`px-2.5 py-0.5 font-bold text-[10px] transition cursor-pointer ${
+                language === 'EN' ? 'bg-[#2563EB] text-white shadow-xs' : 'hover:bg-slate-800 text-slate-400 font-medium'
+              }`}
               type="button"
+              aria-label="Switch to English"
             >
               EN
             </button>
             <button
-              onClick={() => setLang('HI')}
-              className={`px-2 py-0.5 font-bold text-[10px] transition ${lang === 'HI' ? 'bg-esac-blue text-white' : 'hover:bg-slate-800 text-slate-400 font-medium'}`}
+              onClick={() => setLanguage('HI')}
+              className={`px-2.5 py-0.5 font-bold text-[10px] transition cursor-pointer ${
+                language === 'HI' ? 'bg-[#F97316] text-white shadow-xs' : 'hover:bg-slate-800 text-slate-400 font-medium'
+              }`}
               type="button"
+              aria-label="Switch to Hindi"
             >
               हिन्दी
             </button>

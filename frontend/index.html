@@ -2,17 +2,85 @@
 <html class="scroll-smooth" lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="https://lh3.googleusercontent.com/aida-public/AB6AXuA9Kq1Qhu61VwrEpMR1aCaZe0DJVUGNiBy0ErOZ_AkjE0Xc7tQKOCu8Q3tWLHnKWqsDAoCpIlzUqBHh-E37hkW8fQjFUKK4QQFYu8NB3_PdD045PVvDH74M2nhTOrPoXg2pkOMpmS8wl7XELzOK6YulzVNqpSN4srydvpCzBiW7G3gVYJn1fRovUs5Nx9HZz6pDnw_NUHx9wwKylp-tksG6HlzEd7kGg_g6LQfXrHUxOwpcR6r8NzfJ" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elite Slingshot Association of Chhattisgarh | छ.ग. एलीट स्लिंगशॉट संघ</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Polyfill to protect React DOM reconciliation against external translation DOM mutations -->
+    <script>
+      if (typeof Node === 'function' && Node.prototype) {
+        const originalRemoveChild = Node.prototype.removeChild;
+        Node.prototype.removeChild = function (child) {
+          if (child.parentNode !== this) {
+            if (console) {
+              console.warn('Cannot remove child from a different parent', this, child);
+            }
+            return child;
+          }
+          return originalRemoveChild.apply(this, arguments);
+        };
+
+        const originalInsertBefore = Node.prototype.insertBefore;
+        Node.prototype.insertBefore = function (newNode, referenceNode) {
+          if (referenceNode && referenceNode.parentNode !== this) {
+            if (console) {
+              console.warn('Cannot insert before a reference node from a different parent', this, referenceNode);
+            }
+            return newNode;
+          }
+          return originalInsertBefore.apply(this, arguments);
+        };
+      }
+    </script>
+
+    <style>
+      /* Clean hiding of Google Translate toolbar and popups */
+      .goog-te-banner-frame.skiptranslate,
+      .goog-te-banner-frame,
+      iframe.goog-te-banner-frame,
+      iframe.skiptranslate,
+      #goog-gt-tt,
+      .goog-te-balloon-frame {
+        display: none !important;
+        visibility: hidden !important;
+      }
+      body {
+        top: 0px !important;
+        position: static !important;
+      }
+      .goog-tooltip,
+      .goog-tooltip:hover {
+        display: none !important;
+      }
+      .goog-text-highlight {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      #google_translate_element {
+        display: none !important;
+      }
+    </style>
   </head>
   <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-orange-500 selection:text-white">
+    <!-- Hidden Google Translate Element -->
+    <div id="google_translate_element"></div>
+    <script type="text/javascript">
+      window.googleTranslateElementInit = function() {
+        new window.google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,hi',
+          autoDisplay: false
+        }, 'google_translate_element');
+      };
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-
