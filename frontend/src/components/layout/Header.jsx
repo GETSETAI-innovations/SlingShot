@@ -14,6 +14,7 @@ export default function Header({ onOpenRegistrationModal }) {
           {/* Official Logo & Bilingual Titles */}
           <Link className="flex items-center gap-3 group" to="/">
             <img
+              id="header-federation-logo"
               alt="Official Crest of Elite Slingshot Association of Chhattisgarh"
               className="h-16 w-16 object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9Kq1Qhu61VwrEpMR1aCaZe0DJVUGNiBy0ErOZ_AkjE0Xc7tQKOCu8Q3tWLHnKWqsDAoCpIlzUqBHh-E37hkW8fQjFUKK4QQFYu8NB3_PdD045PVvDH74M2nhTOrPoXg2pkOMpmS8wl7XELzOK6YulzVNqpSN4srydvpCzBiW7G3gVYJn1fRovUs5Nx9HZz6pDnw_NUHx9wwKylp-tksG6HlzEd7kGg_g6LQfXrHUxOwpcR6r8NzfJ"

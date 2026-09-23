@@ -74,6 +74,7 @@ export default function HeroSection({ onOpenRegistrationModal }) {
               {/* Tribal Heritage & Athletic Precision Artwork */}
               <div className="relative overflow-hidden rounded-xl bg-gradient-to-b from-slate-50 to-amber-50/30 aspect-square flex items-center justify-center p-2 border border-slate-100">
                 <img
+                  id="home-page-hero-image"
                   alt="Tribal Heritage and Precision Athletic Slingshot Shooter in Chhattisgarh"
                   className="w-full h-full object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-500"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH2_4q5sCNyyX9W_J8WraLNdpr-UYP-_gjtHK-sfFxISJVBGrNNg5WDFkE0wMEbTEjjAbIgVZcmALGRqtCZ0CM1afR2y1tlx_q2kp-DneQ-v33KfA627ariaokiPaLFsY15O5Cs23t-rjbF_zNTx2_4sXLq9ZGsKhSGEdeSOyTzm9LhteL-0FFa8Yzz25hbyVqjdHexRk_sxRwK3CfK9MfX3znVM-_crcvXOkrs2N44jglMKl-MLsc"
