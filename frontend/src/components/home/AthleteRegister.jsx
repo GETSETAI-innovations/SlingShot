@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { showToastError } from '../../utils/toast';
 
 export default function AthleteRegister() {
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ export default function AthleteRegister() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.fullName || !formData.phone) {
-      alert('Please fill in all required fields.');
+      showToastError('Please fill in all required fields.');
       return;
     }
     setSubmitted(true);

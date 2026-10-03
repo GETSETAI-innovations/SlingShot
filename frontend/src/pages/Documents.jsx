@@ -1,9 +1,10 @@
 import React from 'react';
 import { officialDocuments } from '../data/documentsData';
+import { showToastInfo } from '../utils/toast';
 
 export default function Documents() {
   const handleDownload = (docTitle) => {
-    alert(`Downloading official document: ${docTitle}`);
+    showToastInfo(`Downloading official document: ${docTitle}`);
   };
 
   return (

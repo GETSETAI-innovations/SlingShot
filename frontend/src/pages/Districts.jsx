@@ -1,14 +1,35 @@
 import React, { useState } from 'react';
 import { districts } from '../data/districtsData';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Districts() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const districtsPerSlide = 11;
 
   const filteredDistricts = districts.filter(d =>
     d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     d.coordinator.toLowerCase().includes(searchTerm.toLowerCase()) ||
     d.centralRange.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const totalSlides = Math.ceil(filteredDistricts.length / districtsPerSlide);
+  const currentDistricts = filteredDistricts.slice(
+    currentSlide * districtsPerSlide,
+    (currentSlide + 1) * districtsPerSlide
+  );
+
+  const goToSlide = (slideIndex) => {
+    setCurrentSlide(slideIndex);
+  };
+
+  const goToPrevious = () => {
+    setCurrentSlide((prev) => (prev > 0 ? prev - 1 : Math.max(totalSlides - 1, 0)));
+  };
+
+  const goToNext = () => {
+    setCurrentSlide((prev) => (prev < totalSlides - 1 ? prev + 1 : 0));
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-esac-saffron selection:text-white">
@@ -33,8 +54,8 @@ export default function Districts() {
 
           {/* District Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {filteredDistricts.map((dist, idx) => (
-              <div key={idx} className="p-5 rounded-xl border border-slate-200 hover:border-esac-blue hover:shadow-md transition">
+            {currentDistricts.map((dist, idx) => (
+              <div key={`${currentSlide}-${idx}`} className="p-5 rounded-xl border border-slate-200 hover:border-esac-blue hover:shadow-md transition">
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-black text-sm text-esac-navy uppercase">{dist.name}</span>
                   <span className="px-2 py-0.5 rounded text-[9px] font-extrabold bg-emerald-100 text-emerald-800">{dist.status}</span>
@@ -48,9 +69,50 @@ export default function Districts() {
             ))}
           </div>
 
-          <div className="mt-8 text-center text-xs text-slate-500">
-            Showing {filteredDistricts.length} of 33 recognized district associations. Affiliated under ESAC Constitution Clause 12(B).
-          </div>
+          {/* Navigation Controls */}
+          {filteredDistricts.length > 0 && totalSlides > 0 && (
+            <div className="relative mt-8">
+              <div className="flex items-center justify-center gap-2">
+                <button
+                  onClick={goToPrevious}
+                  className="p-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  disabled={totalSlides <= 1}
+                  type="button"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                <div className="flex items-center gap-1.5">
+                  {Array.from({ length: totalSlides }).map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToSlide(index)}
+                      className={`w-2 h-2 rounded-full transition ${
+                        index === currentSlide ? 'bg-esac-blue' : 'bg-slate-300 hover:bg-slate-400'
+                      }`}
+                      type="button"
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={goToNext}
+                  className="p-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  disabled={totalSlides <= 1}
+                  type="button"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Slide Info */}
+          {totalSlides > 0 && filteredDistricts.length > 0 && (
+            <div className="mt-6 text-center text-xs text-slate-500">
+              Showing {currentSlide * districtsPerSlide + 1}-{Math.min((currentSlide + 1) * districtsPerSlide, filteredDistricts.length)} of {filteredDistricts.length} districts
+            </div>
+          )}
         </div>
       </section>
     </div>

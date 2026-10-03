@@ -1,9 +1,10 @@
 import React from 'react';
 import { competitions } from '../data/competitionsData';
+import { showToastInfo } from '../utils/toast';
 
 export default function Competitions() {
   const handleApply = (competitionName) => {
-    alert(`Applying for: ${competitionName}`);
+    showToastInfo(`Applying for: ${competitionName}`);
   };
 
   return (

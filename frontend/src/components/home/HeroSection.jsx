@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 export default function HeroSection({ onOpenRegistrationModal }) {
+  const { user } = useAuth();
   return (
     <section className="relative bg-light-sports text-slate-900 pt-10 pb-16 lg:pt-14 lg:pb-24 overflow-hidden border-b border-slate-200 shadow-sm" data-purpose="hero-banner" id="competitions">
       {/* Watermark official emblem in background */}
@@ -16,7 +18,7 @@ export default function HeroSection({ onOpenRegistrationModal }) {
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-esac-blue text-xs font-semibold uppercase tracking-wider shadow-sm">
               <span className="w-2 h-2 rounded-full bg-esac-saffron"></span>
-              Apex State Sports Body of Chhattisgarh
+              STATE-LEVEL SPORTING PLATFORM
             </div>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none text-esac-navy uppercase">
               Precision.<br />
@@ -25,30 +27,31 @@ export default function HeroSection({ onOpenRegistrationModal }) {
               </span>
             </h1>
             <p className="text-base sm:text-lg text-slate-600 max-w-2xl font-normal leading-relaxed">
-              Building the next era of world-class competitive slingshot precision sport across all 33 districts of Chhattisgarh. From deep Bastar and Surguja tribal heritage to Olympic-standard target shooting championships and national podiums.
+              Building a structured sporting ecosystem for competitive Slingshot Sport across Chhattisgarh — connecting athletes, districts, clubs, coaches and competitions.
             </p>
 
             {/* Action CTA Group */}
             <div className="flex flex-wrap gap-3.5 pt-2">
-              <a
+              <Link
                 className="px-6 py-3.5 bg-esac-blue hover:bg-esac-blue-dark text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition transform hover:-translate-y-0.5 flex items-center gap-2"
-                href="#competitions"
+                to="/competitions"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 Explore Tournaments &amp; Results
-              </a>
-              <button
-                onClick={onOpenRegistrationModal}
-                className="px-6 py-3.5 bg-esac-saffron hover:bg-esac-saffron-dark text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition transform hover:-translate-y-0.5 flex items-center gap-2"
-                type="button"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                Register for ESAC-ID (Athlete Card)
-              </button>
+              </Link>
+              {!user && (
+                <Link
+                  to="/auth?mode=signup"
+                  className="px-6 py-3.5 bg-esac-saffron hover:bg-esac-saffron-dark text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition transform hover:-translate-y-0.5 flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Register for ESAC-ID (Athlete Card)
+                </Link>
+              )}
             </div>
 
             {/* Feature Assurance Badges */}
@@ -114,8 +117,8 @@ export default function HeroSection({ onOpenRegistrationModal }) {
                     <div className="text-[11px] text-slate-600">Current Leader: <span className="text-orange-600 font-semibold">D. Netam (Kanker) 298/300</span></div>
                   </div>
                 </div>
-                <Link className="px-2.5 py-1 text-[11px] font-bold bg-esac-blue hover:bg-esac-blue-dark text-white rounded transition shadow-sm" to="/live-scores">
-                  View Board
+                <Link className="px-2.5 py-1 text-[11px] font-bold bg-esac-blue hover:bg-esac-blue-dark text-white rounded transition shadow-sm" to="/competitions">
+                  View Championship
                 </Link>
               </div>
             </div>

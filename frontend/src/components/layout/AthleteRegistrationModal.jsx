@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { showToastSuccess } from '../../utils/toast';
 
 export default function AthleteRegistrationModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ export default function AthleteRegistrationModal({ isOpen, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Athlete application submitted successfully!');
+    showToastSuccess('Athlete application submitted successfully!');
     onClose();
   };
 
