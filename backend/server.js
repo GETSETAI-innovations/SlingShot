@@ -27,7 +27,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [process.env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:5173'],
+  origin: [process.env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:5173','https://sling-shot-cna8w4t97-praveens-projects-20196f6a.vercel.app'],
   credentials: true
 }));
 app.use(express.json());
