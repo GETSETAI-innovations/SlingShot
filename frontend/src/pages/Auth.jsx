@@ -26,6 +26,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { showToastSuccess, showToastError, showToastInfo } from '../utils/toast';
+import { apiPost } from '../utils/api';
 import loginSlingshotImg from '../assets/slingshot_auth_login.jpg';
 import signupSlingshotImg from '../assets/slingshot_auth_signup.jpg';
 
@@ -190,11 +191,7 @@ export default function Auth() {
     setLoginLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: cleanPhone, password: loginPassword })
-      }).catch(() => null);
+      const response = await apiPost('/api/auth/login', { phone: cleanPhone, password: loginPassword });
 
       if (response && response.ok) {
         const resData = await response.json();
@@ -216,7 +213,8 @@ export default function Auth() {
       setTimeout(() => {
         navigate('/');
       }, 1200);
-    } catch {
+    } catch (error) {
+      console.error('Login error:', error);
       setLoginError('Login failed. Please verify your credentials.');
       showToastError('Login failed. Please verify your credentials.');
     } finally {
@@ -284,21 +282,17 @@ export default function Auth() {
     setSignupLoading(true);
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: signupData.fullName,
-          phone: cleanPhone,
-          email: signupData.email || `${cleanPhone}@esac-cg.gov.in`,
-          password: signupData.password,
-          district: signupData.district,
-          dateOfBirth: signupData.dob,
-          discipline: signupData.discipline,
-          category: signupData.category,
-          role: 'athlete'
-        })
-      }).catch(() => null);
+      const response = await apiPost('/api/auth/register', {
+        name: signupData.fullName,
+        phone: cleanPhone,
+        email: signupData.email || `${cleanPhone}@esac-cg.gov.in`,
+        password: signupData.password,
+        district: signupData.district,
+        dateOfBirth: signupData.dob,
+        discipline: signupData.discipline,
+        category: signupData.category,
+        role: 'athlete'
+      });
 
       if (response && response.ok) {
         // Registration successful - redirect to login with phone pre-filled
@@ -317,7 +311,8 @@ export default function Auth() {
         setSignupError('Registration failed. Please try again or contact support.');
         showToastError('Registration failed. Please try again or contact support.');
       }
-    } catch {
+    } catch (error) {
+      console.error('Registration error:', error);
       setSignupError('Registration encountered an error. Please try again.');
       showToastError('Registration encountered an error. Please try again.');
     } finally {

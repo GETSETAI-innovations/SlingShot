@@ -18,6 +18,7 @@ import {
 import gsap from 'gsap';
 import { useAuth } from '../context/AuthContext';
 import { showToastSuccess, showToastError, showToastInfo } from '../utils/toast';
+import { apiPutFormData } from '../utils/api';
 
 const DISTRICTS = [
   'Raipur', 'Bastar', 'Bilaspur', 'Durg', 'Surguja', 'Rajnandgaon', 'Korba',
@@ -340,13 +341,7 @@ export default function AthleteAnalytics() {
         formData.append('profilePicture', croppedImage);
       }
 
-      const apiResponse = await fetch('/api/auth/updatedetails', {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('esac_token')}`
-        },
-        body: formData
-      });
+      const apiResponse = await apiPutFormData('/api/auth/updatedetails', formData);
 
       if (apiResponse.ok) {
         const resData = await apiResponse.json();
