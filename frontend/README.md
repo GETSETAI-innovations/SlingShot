@@ -1,16 +1,82 @@
-# React + Vite
+# Slingshot Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for the Elite Slingshot Association of Chhattisgarh (ESAC) website. Built with React, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Modern React 19 with Vite for fast development
+- Tailwind CSS for styling
+- Framer Motion for animations
+- Chart.js and Recharts for data visualization
+- Responsive design with mobile-first approach
+- Role-based authentication system
+- Athlete registration and analytics dashboard
 
-## React Compiler
+## 📋 Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js (v14 or higher)
+- npm or yarn
 
-## Expanding the ESLint configuration
+## 🔧 Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Environment Configuration**
+   ```bash
+   cp .env.example .env
+   ```
+   Update the following variables in `.env`:
+   ```
+   VITE_API_URL=http://localhost:5000
+   ```
+
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+## 📝 Available Scripts
+
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build for production
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build locally
+
+## 🔗 API Integration
+
+The frontend uses Vite's proxy configuration to connect to the backend API. Ensure the backend is running on the URL specified in `VITE_API_URL`.
+
+## 🎨 Styling
+
+- Tailwind CSS for utility-first styling
+- Custom color palette based on ESAC branding
+- Responsive breakpoints for mobile, tablet, and desktop
+- Dark mode support (optional)
+
+## 📦 Dependencies
+
+- React 19
+- React Router DOM
+- Tailwind CSS
+- Framer Motion
+- Chart.js
+- Recharts
+- Lucide React (icons)
+
+## 🌐 Environment Variables
+
+All environment variables must be prefixed with `VITE_` to be accessible in the client-side code:
+
+- `VITE_API_URL` - Backend API URL (default: http://localhost:5000)
+
+## 📄 License
+
+ISC

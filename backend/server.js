@@ -6,6 +6,17 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+// Validate required environment variables
+const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'FRONTEND_URL'];
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingEnvVars.length > 0) {
+  console.error('❌ Missing required environment variables:');
+  missingEnvVars.forEach(varName => console.error(`   - ${varName}`));
+  console.error('\nPlease set these variables in your .env file');
+  process.exit(1);
+}
+
 // Import routes
 const authRoutes = require('./routes/auth');
 const athleteRoutes = require('./routes/athlete');
@@ -16,7 +27,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 app.use(express.json());
@@ -26,7 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/slingshot')
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected Successfully'))
 .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 

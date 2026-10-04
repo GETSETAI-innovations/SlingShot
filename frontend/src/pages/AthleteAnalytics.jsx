@@ -468,7 +468,7 @@ export default function AthleteAnalytics() {
               <div className="relative">
                 {user.profilePicture ? (
                   <img
-                    src={user.profilePicture.startsWith('http') ? user.profilePicture : `http://localhost:5000${user.profilePicture}`}
+                    src={user.profilePicture.startsWith('http') ? user.profilePicture : `${import.meta.env.VITE_API_URL}${user.profilePicture}`}
                     alt={getUserName()}
                     className="w-14 h-14 rounded-2xl object-cover border-2 border-esac-saffron shadow-sm"
                     onError={(e) => {
@@ -491,7 +491,7 @@ export default function AthleteAnalytics() {
                       discipline: user.discipline || '',
                       dateOfBirth: user.dateOfBirth || ''
                     });
-                    setPreviewImage(user.profilePicture ? (user.profilePicture.startsWith('http') ? user.profilePicture : `http://localhost:5000${user.profilePicture}`) : null);
+                    setPreviewImage(user.profilePicture ? (user.profilePicture.startsWith('http') ? user.profilePicture : `${import.meta.env.VITE_API_URL}${user.profilePicture}`) : null);
                     setEditModalOpen(true);
                   }}
                   className="absolute -bottom-1 -right-1 w-6 h-6 bg-esac-saffron hover:bg-esac-saffron-dark text-white rounded-full flex items-center justify-center shadow-md transition cursor-pointer"
