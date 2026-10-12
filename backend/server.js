@@ -27,6 +27,8 @@ const emailVerificationRoutes = require('./routes/emailVerification');
 const { validateEmailConfig } = require('./services/emailService');
 if (!validateEmailConfig()) {
   console.warn('⚠️  Email configuration is incomplete. Email verification features will not work.');
+  console.warn('   Required: EMAIL_API_KEY and EMAIL_FROM');
+  console.warn('   Get your API key from https://resend.com/api-keys');
 }
 
 // Initialize Express app

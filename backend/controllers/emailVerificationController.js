@@ -84,6 +84,7 @@ exports.sendOTP = async (req, res) => {
       await sendOTPEmail(normalizedEmail, OTP);
     } catch (emailError) {
       console.error('Email send error:', emailError.message);
+      // Return a user-friendly error without exposing sensitive details
       return res.status(500).json({
         status: 'error',
         message: 'Failed to send OTP email. Please try again later.',
@@ -98,8 +99,7 @@ exports.sendOTP = async (req, res) => {
       data: {
         email: normalizedEmail,
         expiryMinutes: OTP_EXPIRY_MINUTES,
-        resendCooldownSeconds: RESEND_COOLDOWN_SECONDS,
-        ...(isDevelopment && { otp: OTP }) // Include OTP in development for convenience
+        resendCooldownSeconds: RESEND_COOLDOWN_SECONDS
       }
     });
   } catch (error) {
