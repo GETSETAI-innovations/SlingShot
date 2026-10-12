@@ -6,6 +6,13 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+// Debug: Check if .env variables are loaded
+console.log('Debug - Environment variables loaded:');
+console.log('GMAIL_CLIENT_ID:', process.env.GMAIL_CLIENT_ID ? 'SET' : 'NOT SET');
+console.log('GMAIL_CLIENT_SECRET:', process.env.GMAIL_CLIENT_SECRET ? 'SET' : 'NOT SET');
+console.log('GMAIL_REFRESH_TOKEN:', process.env.GMAIL_REFRESH_TOKEN ? 'SET' : 'NOT SET');
+console.log('GMAIL_SENDER:', process.env.GMAIL_SENDER || 'NOT SET');
+
 // Validate required environment variables
 const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET'];
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
@@ -27,8 +34,8 @@ const emailVerificationRoutes = require('./routes/emailVerification');
 const { validateEmailConfig } = require('./services/emailService');
 if (!validateEmailConfig()) {
   console.warn('⚠️  Email configuration is incomplete. Email verification features will not work.');
-  console.warn('   Required: EMAIL_API_KEY and EMAIL_FROM');
-  console.warn('   Get your API key from https://resend.com/api-keys');
+  console.warn('   Required: GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN, GMAIL_SENDER');
+  console.warn('   Follow the setup instructions to configure Gmail OAuth 2.0');
 }
 
 // Initialize Express app
