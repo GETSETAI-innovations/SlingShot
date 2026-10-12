@@ -188,7 +188,6 @@ athleteSchema.pre('save', function(next) {
 });
 
 // Create compound index for efficient queries
-athleteSchema.index({ esacId: 1 });
 athleteSchema.index({ userId: 1 });
 athleteSchema.index({ 'address.district': 1 });
 athleteSchema.index({ registrationStatus: 1 });

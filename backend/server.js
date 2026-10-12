@@ -21,6 +21,13 @@ if (missingEnvVars.length > 0) {
 const authRoutes = require('./routes/auth');
 const athleteRoutes = require('./routes/athlete');
 const registrationRoutes = require('./routes/registration');
+const emailVerificationRoutes = require('./routes/emailVerification');
+
+// Validate email configuration
+const { validateEmailConfig } = require('./services/emailService');
+if (!validateEmailConfig()) {
+  console.warn('⚠️  Email configuration is incomplete. Email verification features will not work.');
+}
 
 // Initialize Express app
 const app = express();
@@ -32,6 +39,13 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Log all requests
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log('Body:', req.body);
+  next();
+});
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static('uploads'));
@@ -45,6 +59,7 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('/api/auth', authRoutes);
 app.use('/api/athletes', athleteRoutes);
 app.use('/api/registration', registrationRoutes);
+app.use('/api/email-verification', emailVerificationRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

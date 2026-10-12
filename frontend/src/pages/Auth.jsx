@@ -29,6 +29,7 @@ import { showToastSuccess, showToastError, showToastInfo } from '../utils/toast'
 import { apiPost } from '../utils/api';
 import loginSlingshotImg from '../assets/slingshot_auth_login.jpg';
 import signupSlingshotImg from '../assets/slingshot_auth_signup.jpg';
+import EmailOtpModal from '../components/layout/EmailOtpModal';
 
 const DISTRICTS = [
   'Raipur', 'Bastar', 'Bilaspur', 'Durg', 'Surguja', 'Rajnandgaon', 'Korba',
@@ -171,6 +172,25 @@ export default function Auth() {
   const [signupLoading, setSignupLoading] = useState(false);
   const [signupError, setSignupError] = useState('');
   const [signupSuccessData, setSignupSuccessData] = useState(null);
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [verificationProof, setVerificationProof] = useState(null);
+  const [showOtpModal, setShowOtpModal] = useState(false);
+
+  const handleVerifyEmail = () => {
+    if (!signupData.email || !signupData.email.trim()) {
+      showToastError('Please enter an email address first.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(signupData.email.trim())) {
+      showToastError('Please enter a valid email address.');
+      return;
+    }
+    // Reset verification state when requesting new OTP
+    setEmailVerified(false);
+    setVerificationProof(null);
+    setShowOtpModal(true);
+  };
 
   // Handle Login Submit
   const handleLoginSubmit = async (e) => {
@@ -253,6 +273,13 @@ export default function Auth() {
       setSignupError('Please select your competition category.');
       return;
     }
+    // Check if email is provided and verified
+    if (signupData.email && signupData.email.trim()) {
+      if (!emailVerified || !verificationProof) {
+        setSignupError('Please verify your email before continuing.');
+        return;
+      }
+    }
     setSignupStep(3);
   };
 
@@ -282,7 +309,7 @@ export default function Auth() {
     setSignupLoading(true);
 
     try {
-      const response = await apiPost('/api/auth/register', {
+      const requestData = {
         name: signupData.fullName,
         phone: cleanPhone,
         email: signupData.email || `${cleanPhone}@esac-cg.gov.in`,
@@ -292,7 +319,14 @@ export default function Auth() {
         discipline: signupData.discipline,
         category: signupData.category,
         role: 'athlete'
-      });
+      };
+
+      // Include verification proof if email was provided and verified
+      if (signupData.email && signupData.email.trim() && verificationProof) {
+        requestData.verificationProof = verificationProof;
+      }
+
+      const response = await apiPost('/api/auth/register', requestData);
 
       if (response && response.ok) {
         // Registration successful - redirect to login with phone pre-filled
@@ -308,8 +342,9 @@ export default function Auth() {
           setSignupSuccessData(null);
         }, 2000);
       } else {
-        setSignupError('Registration failed. Please try again or contact support.');
-        showToastError('Registration failed. Please try again or contact support.');
+        const resData = await response.json();
+        setSignupError(resData.message || 'Registration failed. Please try again or contact support.');
+        showToastError(resData.message || 'Registration failed. Please try again or contact support.');
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -1083,15 +1118,39 @@ export default function Auth() {
                               <label className="block text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Email Address <span className="text-slate-500 lowercase">(optional — for digital credentials)</span>
                               </label>
-                              <div className="relative">
-                                <Mail className="w-4 h-4 absolute left-3.5 top-2.5 text-orange-400" />
+                              <div className="relative flex items-center">
+                                <Mail className="w-4 h-4 absolute left-3.5 text-orange-400 pointer-events-none" />
                                 <input
                                   type="email"
                                   value={signupData.email}
-                                  onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
+                                  onChange={(e) => {
+                                    setSignupData({ ...signupData, email: e.target.value });
+                                    if (emailVerified) {
+                                      setEmailVerified(false);
+                                      setVerificationProof(null);
+                                    }
+                                  }}
                                   placeholder="athlete@example.com"
-                                  className="w-full bg-orange-50/30 border border-orange-200 focus:border-orange-500 focus:bg-white text-slate-900 text-xs sm:text-sm rounded-xl pl-10 pr-3 py-2 sm:py-2.5 outline-none transition placeholder:text-slate-400 shadow-xs"
+                                  className="w-full bg-orange-50/30 border border-orange-200 focus:border-orange-500 focus:bg-white text-slate-900 text-xs sm:text-sm rounded-xl pl-10 pr-24 py-2 sm:py-2.5 outline-none transition placeholder:text-slate-400 shadow-xs"
                                 />
+                                <button
+                                  type="button"
+                                  onClick={handleVerifyEmail}
+                                  className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold transition-colors select-none ${
+                                    emailVerified
+                                      ? 'text-emerald-600 cursor-default flex items-center gap-1'
+                                      : 'text-emerald-600 hover:text-emerald-700 cursor-pointer hover:underline underline-offset-2'
+                                  }`}
+                                >
+                                  {emailVerified ? (
+                                    <>
+                                      <span>Verified</span>
+                                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                                    </>
+                                  ) : (
+                                    <span>Verify</span>
+                                  )}
+                                </button>
                               </div>
                             </div>
 
@@ -1277,9 +1336,20 @@ export default function Auth() {
           <span className="text-orange-300">•</span>
           <span className="text-slate-600">Affiliated to ESFI</span>
           <span className="text-orange-300">•</span>
-          <span className="text-slate-500">All rights reserved</span>
         </div>
       </footer>
+
+      {/* Email OTP Verification Modal with Reaction Emoji */}
+      <EmailOtpModal
+        isOpen={showOtpModal}
+        onClose={() => setShowOtpModal(false)}
+        email={signupData.email}
+        onSuccess={(proof) => {
+          setEmailVerified(true);
+          setVerificationProof(proof);
+          setShowOtpModal(false);
+        }}
+      />
     </div>
   );
 }

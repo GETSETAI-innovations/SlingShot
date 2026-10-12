@@ -2,6 +2,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
+const { validateProof } = require('./emailVerificationController');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -49,11 +50,33 @@ exports.register = async (req, res) => {
   try {
     console.log('Registration request body:', req.body);
 
-    const { name, email, password, phone, district, role, dateOfBirth, discipline, category } = req.body;
+    const { name, email, password, phone, district, role, dateOfBirth, discipline, category, verificationProof } = req.body;
 
     const cleanPhone = phone ? phone.toString().trim().replace(/^\+91\s*/, '').replace(/\s+/g, '') : '';
 
     console.log('Clean phone:', cleanPhone);
+
+    // If email is provided, verify it with the verification proof
+    if (email && email.trim()) {
+      const normalizedEmail = email.toString().trim().toLowerCase();
+
+      if (!verificationProof) {
+        return res.status(403).json({
+          status: 'error',
+          message: 'Please verify your email before completing signup.'
+        });
+      }
+
+      // Validate the verification proof
+      const proofValidation = await validateProof(normalizedEmail, verificationProof);
+
+      if (!proofValidation.valid) {
+        return res.status(403).json({
+          status: 'error',
+          message: proofValidation.message || 'Please verify your email before completing signup.'
+        });
+      }
+    }
 
     // Check if user already exists by phone (email is optional)
     const queryConditions = [{ phone: cleanPhone }];
