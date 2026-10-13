@@ -6,13 +6,6 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
-// Debug: Check if .env variables are loaded
-console.log('Debug - Environment variables loaded:');
-console.log('GMAIL_CLIENT_ID:', process.env.GMAIL_CLIENT_ID ? 'SET' : 'NOT SET');
-console.log('GMAIL_CLIENT_SECRET:', process.env.GMAIL_CLIENT_SECRET ? 'SET' : 'NOT SET');
-console.log('GMAIL_REFRESH_TOKEN:', process.env.GMAIL_REFRESH_TOKEN ? 'SET' : 'NOT SET');
-console.log('GMAIL_SENDER:', process.env.GMAIL_SENDER || 'NOT SET');
-
 // Validate required environment variables
 const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET'];
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
